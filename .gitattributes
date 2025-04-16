@@ -1,1 +1,8 @@
-*.dart linguist-language=Dart
+*.dart linguist-detectable=true
+ios/** linguist-vendored
+android/** linguist-vendored
+macos/** linguist-vendored
+windows/** linguist-vendored
+linux/** linguist-vendored
+.dart_tool/** linguist-generated
+build/** linguist-generated
