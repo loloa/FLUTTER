@@ -18,10 +18,14 @@ class ResultsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final summaryData = SummaryMapper().getSummary(chosenAnswers);
     final numTotalQuestions = questions.length;
+
     final numCorrectQestions =
-        summaryData.where((model) {
-          return model.isCorrect;
-        }).length;
+        summaryData.where((model) => model.isCorrect).length;
+
+    // final numCorrectQestions =
+    //     summaryData.where((model) {
+    //       return model.isCorrect;
+    //     }).length;
 
     return SizedBox(
       width: double.infinity,
