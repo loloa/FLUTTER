@@ -26,10 +26,20 @@ class _ExpensesState extends State<Expenses> {
       category: Category.leisure,
     ),
   ];
+  void _openAddExpenseOverlay() {
+    showModalBottomSheet(context: context, builder: (ctx) => Text('data'));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: const Text('Tracker'),
+        actions: [
+          IconButton(onPressed: _openAddExpenseOverlay, icon: Icon(Icons.add)),
+        ],
+      ),
       body: Column(
         children: [
           const Text('The chart'),
