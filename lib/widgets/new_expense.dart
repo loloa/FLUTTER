@@ -3,7 +3,9 @@ import 'package:expense_tracker/helpers/formaters.dart';
 import 'package:expense_tracker/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  final void Function(Expense expense) onAddExpense;
   @override
   State<StatefulWidget> createState() {
     return _NewExpense();
@@ -48,10 +50,9 @@ class _NewExpense extends State<NewExpense> {
   void _submitExpenseData() {
     final enteredAmount = double.tryParse(_amountController.text);
     final amountIsInvalid = enteredAmount == null || enteredAmount < 0;
+    final enteredTitle = _titleController.text.trim();
 
-    if (_titleController.text.trim().isEmpty ||
-        amountIsInvalid ||
-        _selectedDate == null) {
+    if (enteredTitle.isEmpty || amountIsInvalid || _selectedDate == null) {
       showDialog(
         context: context,
         builder:
@@ -74,6 +75,14 @@ class _NewExpense extends State<NewExpense> {
     }
 
     // valid case
+    final newExpense = Expense(
+      title: enteredTitle,
+      amount: enteredAmount,
+      date: _selectedDate!,
+      category: _selectedCategory!,
+    );
+    widget.onAddExpense(newExpense);
+    Navigator.pop(context);
   }
 
   /*
@@ -97,7 +106,7 @@ class _NewExpense extends State<NewExpense> {
       resizeToAvoidBottomInset:
           true, // Ensures the layout adjusts for the keyboard
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
         child: SingleChildScrollView(
           // Allows the content to scroll when the keyboard appears
           child: Column(
