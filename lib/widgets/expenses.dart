@@ -13,11 +13,16 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
+  final now = DateTime.now();
   final List<Expense> _registeredExpenses = [
     Expense(
       title: 'Flutter Course',
       amount: 19.99,
-      date: DateTime.now(),
+      date: DateTime(
+        DateTime.now().year - 1,
+        DateTime.now().month - 1,
+        DateTime.now().day + 2,
+      ),
       category: Category.food,
     ),
     Expense(
