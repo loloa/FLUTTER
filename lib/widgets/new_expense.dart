@@ -80,7 +80,7 @@ class _NewExpense extends State<NewExpense> {
       title: enteredTitle,
       amount: enteredAmount,
       date: _selectedDate!,
-      category: _selectedCategory!,
+      category: _selectedCategory,
     );
     widget.onAddExpense(newExpense);
     Navigator.pop(context);
