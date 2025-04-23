@@ -1,3 +1,4 @@
+import 'package:expense_tracker/main.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/helpers/formaters.dart';
 import 'package:expense_tracker/models/expense.dart';
@@ -150,6 +151,7 @@ class _NewExpense extends State<NewExpense> {
               Row(
                 children: [
                   DropdownButton(
+                    dropdownColor: kColorScheme.secondaryContainer,
                     value: _selectedCategory,
                     items:
                         Category.values

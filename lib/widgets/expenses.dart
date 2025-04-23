@@ -84,7 +84,6 @@ class _ExpensesState extends State<Expenses> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
         title: const Text('Tracker'),
         actions: [
           IconButton(onPressed: _openAddExpenseOverlay, icon: Icon(Icons.add)),
