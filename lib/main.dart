@@ -24,7 +24,13 @@ void main() {
             backgroundColor: kColorScheme.secondaryContainer,
           ),
         ),
+        // changes for all ui tetxs widgets by default
         textTheme: ThemeData().textTheme.copyWith(
+          bodyMedium: TextStyle(
+            fontSize: 16,
+            color: kColorScheme.primary,
+            fontWeight: FontWeight.normal,
+          ),
           titleLarge: TextStyle(
             fontWeight: FontWeight.bold,
             color: kColorScheme.onSecondaryContainer,

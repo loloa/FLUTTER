@@ -1,3 +1,4 @@
+import 'package:expense_tracker/main.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
 
@@ -10,8 +11,16 @@ class ExpenseItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(expense.title),
+            // overides text style from main theme
+            Text(
+              expense.title,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                fontSize: 20,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
             const SizedBox(height: 4),
             Row(
               children: [
