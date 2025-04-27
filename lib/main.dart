@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rendering_proj/ui_updates_demo.dart';
+import 'package:rendering_proj/keys/keys.dart';
+// import 'package:rendering_proj/ui_updates_demo.dart';
 
 void main() {
   runApp(const App());
@@ -14,7 +15,7 @@ class App extends StatelessWidget {
       theme: ThemeData(useMaterial3: true),
       home: Scaffold(
         appBar: AppBar(title: const Text('Flutter internals')),
-        body: const UIUpdatesDemo(),
+        body: const Keys() /*UIUpdatesDemo()*/,
       ),
     );
   }
