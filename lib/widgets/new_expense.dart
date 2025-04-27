@@ -28,6 +28,8 @@ class _NewExpense extends State<NewExpense> {
   }
 
   void _presentDatePicker() async {
+    FocusScope.of(context).unfocus();
+
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 100, now.month, now.day);
     final lastDate = DateTime(now.year + 10, now.month, now.day);
@@ -86,7 +88,100 @@ class _NewExpense extends State<NewExpense> {
     Navigator.pop(context);
   }
 
-  /*
+  @override
+  Widget build(BuildContext context) {
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+
+    return SizedBox(
+      height: double.infinity,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, keyboardSpace + 16),
+          child: SingleChildScrollView(
+            // Allows the content to scroll when the keyboard appears
+            child: Column(
+              children: [
+                TextField(
+                  controller: _titleController,
+                  maxLength: 50,
+                  decoration: const InputDecoration(label: Text('Title')),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _amountController,
+                        keyboardType: TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        decoration: const InputDecoration(
+                          prefixText: '\$',
+                          label: Text('Amount'),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(datePickerTitle),
+                          IconButton(
+                            onPressed: _presentDatePicker,
+                            icon: const Icon(Icons.calendar_month),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    DropdownButton(
+                      dropdownColor: kColorScheme.secondaryContainer,
+                      value: _selectedCategory,
+                      items:
+                          Category.values
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category,
+                                  child: Text(category.name.toUpperCase()),
+                                ),
+                              )
+                              .toList(),
+                      onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+                        FocusScope.of(context).unfocus();
+                        setState(() {
+                          _selectedCategory = value;
+                        });
+                      },
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Cancel'),
+                    ),
+                    ElevatedButton(
+                      onPressed: _submitExpenseData,
+                      child: const Text('Save Expense'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    /*
   void _presentDatePicker() {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 100, now.month, now.day);
@@ -101,8 +196,7 @@ class _NewExpense extends State<NewExpense> {
     });
   }
 */
-  @override
-  Widget build(BuildContext context) {
+    /*
     return Scaffold(
       resizeToAvoidBottomInset:
           true, // Ensures the layout adjusts for the keyboard
@@ -189,6 +283,7 @@ class _NewExpense extends State<NewExpense> {
         ),
       ),
     );
+    */
   }
 }
 
