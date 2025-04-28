@@ -4,7 +4,13 @@ import 'package:meals/widgets/meal_item_trait.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class Mealitem extends StatelessWidget {
-  const Mealitem({super.key, required this.model});
+  const Mealitem({
+    super.key,
+    required this.model,
+    required this.onTapToDetails,
+  });
+
+  final void Function(Meal meal) onTapToDetails;
 
   Widget titleView(Meal model) {
     return Text(
@@ -57,7 +63,9 @@ class Mealitem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onTapToDetails(model);
+        },
         // z stack
         child: Stack(
           children: [
