@@ -9,7 +9,7 @@ class Mealitem extends StatelessWidget {
     required this.model,
     required this.onTapToDetails,
   });
-
+  final Meal model;
   final void Function(Meal meal) onTapToDetails;
 
   Widget titleView(Meal model) {
@@ -19,7 +19,7 @@ class Mealitem extends StatelessWidget {
       textAlign: TextAlign.center,
       softWrap: true,
       overflow: TextOverflow.ellipsis,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
         color: Colors.white,
@@ -42,8 +42,6 @@ class Mealitem extends StatelessWidget {
       ],
     );
   }
-
-  final Meal model;
 
   String get complexityText {
     return model.complexity.name[0].toUpperCase() +

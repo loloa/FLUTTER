@@ -6,13 +6,20 @@ import 'package:meals/screens/meals.dart';
 import 'package:meals/widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key});
+  const CategoriesScreen({super.key, required this.onToggleFavorites});
+
+  final void Function(Meal meal) onToggleFavorites;
 
   void _selectCategory(BuildContext context, Category category) {
-    final meals = _filter(category.id);
+    final filteredMeals = _filter(category.id);
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => MealsScreens(title: category.title, meals: meals),
+        builder:
+            (ctx) => MealsScreens(
+              title: category.title,
+              meals: filteredMeals,
+              onToggleFavorites: onToggleFavorites,
+            ),
       ),
     );
   }
@@ -25,27 +32,24 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Pick your categry')),
-      body: GridView(
-        padding: EdgeInsets.all(24),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-        ),
-        children: [
-          ...availableCategories.map(
-            (category) => CategoryGridItem(
-              category: category,
-              onSelectCategory: () {
-                _selectCategory(context, category);
-              },
-            ),
-          ),
-        ],
+    return GridView(
+      padding: EdgeInsets.all(24),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
       ),
+      children: [
+        ...availableCategories.map(
+          (category) => CategoryGridItem(
+            category: category,
+            onSelectCategory: () {
+              _selectCategory(context, category);
+            },
+          ),
+        ),
+      ],
     );
   }
 }
