@@ -45,6 +45,13 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
+  void _setScreenFromSideMenu(String identifier) {
+    if (identifier == 'filters') {
+    } else if (identifier == 'meals') {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget activePage = CategoriesScreen(
