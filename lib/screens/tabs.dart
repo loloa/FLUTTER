@@ -48,14 +48,13 @@ class _TabsScreenState extends State<TabsScreen> {
   }
 
   void _setScreenFromSideMenu(String identifier) {
+    Navigator.of(context).pop();
+
     if (identifier == 'filters') {
-      Navigator.of(context).pop();
       Navigator.of(
         context,
         rootNavigator: true,
       ).push(MaterialPageRoute(builder: (ctx) => const FiltersScreen()));
-    } else if (identifier == 'meals') {
-      Navigator.of(context).pop();
     }
   }
 
