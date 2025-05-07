@@ -37,6 +37,7 @@ class _MyTabsScreenState extends State<MyTabsScreen> {
   @override
   Widget build(BuildContext context) {
     Widget activePage = CategoriesScreen(
+      availableMeals: [],
       onToggleFavorites: _viewModel.toggleMealFavoriteStatus,
     );
 
