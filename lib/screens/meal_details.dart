@@ -35,7 +35,31 @@ class MealDetailsScreen extends ConsumerWidget {
                     : 'Meal is not favorite!',
               );
             },
-            icon: isFavorite ? Icon(Icons.star) : Icon(Icons.star_border),
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (chaild, animation) {
+                return ScaleTransition(
+                  scale: Tween(begin: 1.8, end: 1.0).animate(animation),
+                  child: chaild,
+                );
+                // return FadeTransition(
+                //   opacity: Tween<double>(begin: 0.1, end: 1).animate(animation),
+                //   child: chaild,
+                // );
+
+                // return RotationTransition(
+                //   turns: /*animation*/ Tween(
+                //     begin: 0.7,
+                //     end: 1.0,
+                //   ).animate(animation),
+                //   child: chaild,
+                // );
+              },
+              child: Icon(
+                isFavorite ? Icons.star : Icons.star_border,
+                key: ValueKey(isFavorite),
+              ),
+            ),
           ),
         ],
       ),
