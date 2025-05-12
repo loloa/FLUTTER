@@ -10,8 +10,8 @@ class GroceryCell extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 16,
-          height: 16,
+          width: 24,
+          height: 24,
           decoration: BoxDecoration(color: model.category.color),
         ),
         SizedBox(width: 20),

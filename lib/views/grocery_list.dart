@@ -16,12 +16,12 @@ class GroceryList extends StatelessWidget {
           final model = groceryItems[index];
           return ListTile(
             leading: Container(
-              width: 16,
-              height: 16,
+              width: 24,
+              height: 24,
               decoration: BoxDecoration(color: model.category.color),
             ),
             title: Text(model.name),
-            trailing: Text('${model.quantity}'),
+            trailing: Text(model.quantity.toString()),
           );
           // GroceryCell(model: groceryItems[index]);
         },
