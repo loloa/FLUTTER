@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
 
-class NewItem extends StatelessWidget {
+class NewItem extends StatefulWidget {
   const NewItem({super.key});
 
+  @override
+  State<NewItem> createState() => _NewItemState();
+}
+
+class _NewItemState extends State<NewItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
