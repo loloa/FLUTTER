@@ -56,6 +56,17 @@ class NewItem extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(onPressed: () {}, child: const Text('Reset')),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Add item'),
+                  ),
+                ],
+              ),
             ],
           ),
         ), // instead of TextField()
