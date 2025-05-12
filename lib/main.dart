@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:shopping_list/data/dummy_items.dart';
+import 'package:shopping_list/models/grocery_item.dart';
+import 'package:shopping_list/views/grocery_cell.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +23,25 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: const Color.fromARGB(255, 50, 58, 60),
       ),
-      home: ...,
+      home: Groceries(),
+    );
+  }
+}
+
+class Groceries extends StatelessWidget {
+  const Groceries({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Your Groceries')),
+
+      body: ListView.builder(
+        itemCount: groceryItems.length,
+        itemBuilder: (context, index) {
+          return GroceryCell(model: groceryItems[index]);
+        },
+      ),
     );
   }
 }
