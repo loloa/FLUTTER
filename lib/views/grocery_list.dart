@@ -6,6 +6,8 @@ import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/grocery_item.dart';
 import 'package:shopping_list/views/new_item.dart';
 import 'package:http/http.dart' as http;
+import 'package:shopping_list/HTTP_module/grocery_api/grocery_api.dart';
+import 'package:shopping_list/HTTP_module/grocery_api/grocery_item_dto.dart';
 
 class GroceryList extends StatefulWidget {
   const GroceryList({super.key});
@@ -22,7 +24,47 @@ class _GroceryListState extends State<GroceryList> {
   @override
   void initState() {
     super.initState();
-    _loadItems();
+    // _loadItems();
+    _loadGroceryItems();
+  }
+
+  void _loadGroceryItems() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final List<GroceryItemDTO> groceryDTOs =
+          await GroceryApi.getGroceryItems();
+
+      final List<GroceryItem> loadedItems =
+          groceryDTOs.map((dto) {
+            final itemCategory = categories.values.firstWhere(
+              (category) => category.title == dto.category,
+            );
+
+            return GroceryItem(
+              id: dto.dbId!,
+              name: dto.name!,
+              quantity: dto.quantity!,
+              category: itemCategory,
+            );
+          }).toList();
+
+      setState(() {
+        _items = loadedItems;
+        _isLoading = false;
+      });
+
+      AppLog.api.info('LOADED ${loadedItems.length} items');
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load items.\nTry again later';
+        _isLoading = false;
+      });
+      AppLog.api.error('Error loading grocery items: $e');
+    }
   }
 
   void _loadItems() async {
@@ -30,12 +72,9 @@ class _GroceryListState extends State<GroceryList> {
       _isLoading = true;
     });
 
-    final url = GroceryAPIEndPoints.get.url(path: 'shopping-list.json');
+    final url = GroceryAPIEndPoints.get.url();
     final response = await http.get(url);
 
-    setState(() {
-      _isLoading = false;
-    });
     if (response.statusCode >= 400) {
       _error = 'Failed to load items.\nTry again later';
     }
