@@ -48,23 +48,24 @@ class _GroceryListState extends State<GroceryList> {
     setState(() {
       _items = loadedItems;
     });
-    /*
+
     final decodedResponse = jsonDecode(response.body);
     final prettyJson = const JsonEncoder.withIndent(
       '  ',
     ).convert(decodedResponse);
-
-    AppLog.api.dLog(prettyJson);
-    */
+    AppLog.api.dLog('LOADED items: $prettyJson');
   }
 
   void _addNewitem() async {
-    await Navigator.of(
+    final justAddedItem = await Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (context) => const NewItem()));
-
-    // wait to come back after finishing writing to DB
-    _loadItems();
+    if (justAddedItem == null) {
+      return;
+    }
+    setState(() {
+      _items.add(justAddedItem);
+    });
   }
 
   void _removeItem(GroceryItem item) {

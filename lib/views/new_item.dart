@@ -6,6 +6,8 @@ import 'package:shopping_list/models/category.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shopping_list/models/grocery_item.dart';
+
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
 
@@ -39,10 +41,19 @@ class _NewItemState extends State<NewItem> {
       AppLog.api.info('Added new item: ${response.body}');
       AppLog.api.info(response.statusCode.toString());
 
+      final Map<String, dynamic> responsData = jsonDecode(response.body);
+
       if (!context.mounted) {
         return;
       }
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(
+        GroceryItem(
+          id: responsData['name'],
+          name: _enteredName,
+          quantity: _enteredQuantity,
+          category: _selectedCategory,
+        ),
+      );
     }
   }
 
