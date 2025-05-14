@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shopping_list/app_logger.dart';
+import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/grocery_item.dart';
 import 'package:shopping_list/views/new_item.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,7 @@ class GroceryList extends StatefulWidget {
 }
 
 class _GroceryListState extends State<GroceryList> {
-  final List<GroceryItem> _items = [];
+  List<GroceryItem> _items = [];
 
   @override
   void initState() {
@@ -28,13 +29,33 @@ class _GroceryListState extends State<GroceryList> {
       'shopping-list.json',
     );
     final response = await http.get(url);
+    final Map<String, dynamic> listData = json.decode(response.body);
+    final List<GroceryItem> loadedItems = [];
+    for (final entry in listData.entries) {
+      final itemCategory = categories.values.firstWhere(
+        (category) => category.title == entry.value['category'],
+      );
 
+      final item = GroceryItem(
+        id: entry.key,
+        name: entry.value['name'],
+        quantity: entry.value['quantity'],
+        category: itemCategory,
+      );
+      loadedItems.add(item);
+    }
+
+    setState(() {
+      _items = loadedItems;
+    });
+    /*
     final decodedResponse = jsonDecode(response.body);
     final prettyJson = const JsonEncoder.withIndent(
       '  ',
     ).convert(decodedResponse);
 
     AppLog.api.dLog(prettyJson);
+    */
   }
 
   void _addNewitem() async {
