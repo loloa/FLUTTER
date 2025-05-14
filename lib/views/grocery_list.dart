@@ -15,7 +15,8 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   List<GroceryItem> _items = [];
-  bool _isLoading = true;
+  bool _isLoading = false;
+  String? _error;
 
   @override
   void initState() {
@@ -24,11 +25,21 @@ class _GroceryListState extends State<GroceryList> {
   }
 
   void _loadItems() async {
+    setState(() {
+      _isLoading = true;
+    });
     final url = Uri.https(
       'flutter-prep-74de6-default-rtdb.firebaseio.com',
       'shopping-list.json',
     );
     final response = await http.get(url);
+
+    setState(() {
+      _isLoading = false;
+    });
+    if (response.statusCode >= 400) {
+      _error = 'Failed to load items.\nTry again later';
+    }
     final Map<String, dynamic> listData = json.decode(response.body);
     final List<GroceryItem> loadedItems = [];
     for (final entry in listData.entries) {
@@ -87,6 +98,20 @@ class _GroceryListState extends State<GroceryList> {
     child: SizedBox(width: 44, height: 44, child: CircularProgressIndicator()),
   );
 
+  Widget _errorMessageView() {
+    var center = Center(
+      child: Text(
+        _error!,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 24,
+          color: Color.fromARGB(255, 147, 229, 250),
+        ),
+      ),
+    );
+    return center;
+  }
+
   Widget _buildListItem(GroceryItem item) {
     return Dismissible(
       key: ValueKey(item.id),
@@ -110,6 +135,9 @@ class _GroceryListState extends State<GroceryList> {
   }
 
   Widget _buildcontent() {
+    if (_error != null) {
+      return _errorMessageView();
+    }
     if (_isLoading) {
       return _loadingView;
     }
