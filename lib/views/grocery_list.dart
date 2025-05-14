@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shopping_list/app_logger.dart';
 import 'package:shopping_list/models/grocery_item.dart';
 import 'package:shopping_list/views/new_item.dart';
+import 'package:http/http.dart' as http;
 
 class GroceryList extends StatefulWidget {
   const GroceryList({super.key});
@@ -11,6 +15,42 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   final List<GroceryItem> _items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
+
+  void _loadItems() async {
+    final url = Uri.https(
+      'flutter-prep-74de6-default-rtdb.firebaseio.com',
+      'shopping-list.json',
+    );
+    final response = await http.get(url);
+
+    final decodedResponse = jsonDecode(response.body);
+    final prettyJson = const JsonEncoder.withIndent(
+      '  ',
+    ).convert(decodedResponse);
+
+    AppLog.api.dLog(prettyJson);
+  }
+
+  void _addNewitem() async {
+    await Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => const NewItem()));
+
+    // wait to come back after finishing writing to DB
+    _loadItems();
+  }
+
+  void _removeItem(GroceryItem item) {
+    setState(() {
+      _items.remove(item);
+    });
+  }
 
   static const _emptyStateMessage = Center(
     child: Text(
@@ -50,25 +90,6 @@ class _GroceryListState extends State<GroceryList> {
       itemCount: _items.length,
       itemBuilder: (context, index) => _buildListItem(_items[index]),
     );
-  }
-
-  void _removeItem(GroceryItem item) {
-    setState(() {
-      _items.remove(item);
-    });
-  }
-
-  void _addNewitem() async {
-    final item = await Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => const NewItem()));
-
-    if (item == null) {
-      return;
-    }
-    setState(() {
-      _items.add(item);
-    });
   }
 
   @override

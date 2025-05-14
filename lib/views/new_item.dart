@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_list/app_logger.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/category.dart';
 
@@ -35,21 +36,13 @@ class _NewItemState extends State<NewItem> {
           'category': _selectedCategory.title,
         }),
       );
-
-      print(response.body);
-      print(response.statusCode);
+      AppLog.api.info('Added new item: ${response.body}');
+      AppLog.api.info(response.statusCode.toString());
 
       if (!context.mounted) {
         return;
       }
       Navigator.of(context).pop();
-      // final newItem = GroceryItem(
-      //   id: DateTime.now().toString(),
-      //   name: _enteredName,
-      //   quantity: _enteredQuantity,
-      //   category: _selectedCategory,
-      // );
-      // Navigator.of(context).pop(newItem);
     }
   }
 
