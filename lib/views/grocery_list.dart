@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shopping_list/HTTP_module/grocery_api/grocery_endpoints.dart';
 import 'package:shopping_list/app_logger.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/grocery_item.dart';
@@ -28,10 +29,8 @@ class _GroceryListState extends State<GroceryList> {
     setState(() {
       _isLoading = true;
     });
-    final url = Uri.https(
-      'flutter-prep-74de6-default-rtdb.firebaseio.com',
-      'shopping-list.json',
-    );
+
+    final url = GroceryAPIEndPoints.get.url(path: 'shopping-list.json');
     final response = await http.get(url);
 
     setState(() {
