@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shopping_list/app_logger.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/category.dart';
+import 'package:shopping_list/models/grocery_item.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:shopping_list/models/grocery_item.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -20,11 +19,14 @@ class _NewItemState extends State<NewItem> {
   var _enteredName = '';
   var _enteredQuantity = 1;
   var _selectedCategory = categories[Categories.vegetables]!;
+  bool _isSending = false;
 
   void _saveItem() async {
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
-
+      setState(() {
+        _isSending = true;
+      });
       final url = Uri.https(
         'flutter-prep-74de6-default-rtdb.firebaseio.com',
         'shopping-list.json',
@@ -46,6 +48,7 @@ class _NewItemState extends State<NewItem> {
       if (!context.mounted) {
         return;
       }
+
       Navigator.of(context).pop(
         GroceryItem(
           id: responsData['name'],
@@ -147,10 +150,20 @@ class _NewItemState extends State<NewItem> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TextButton(onPressed: resetForm, child: const Text('Reset')),
+                  TextButton(
+                    onPressed: _isSending ? null : resetForm,
+                    child: const Text('Reset'),
+                  ),
                   ElevatedButton(
-                    onPressed: _saveItem,
-                    child: const Text('Add item'),
+                    onPressed: _isSending ? null : _saveItem,
+                    child:
+                        _isSending
+                            ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(),
+                            )
+                            : const Text('Add item'),
                   ),
                 ],
               ),
