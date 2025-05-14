@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shopping_list/app_logger.dart';
 import 'package:shopping_list/data/categories.dart';
@@ -16,6 +15,7 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   List<GroceryItem> _items = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -47,6 +47,7 @@ class _GroceryListState extends State<GroceryList> {
 
     setState(() {
       _items = loadedItems;
+      _isLoading = false;
     });
 
     final decodedResponse = jsonDecode(response.body);
@@ -82,6 +83,10 @@ class _GroceryListState extends State<GroceryList> {
     ),
   );
 
+  static const _loadingView = Center(
+    child: SizedBox(width: 44, height: 44, child: CircularProgressIndicator()),
+  );
+
   Widget _buildListItem(GroceryItem item) {
     return Dismissible(
       key: ValueKey(item.id),
@@ -105,6 +110,9 @@ class _GroceryListState extends State<GroceryList> {
   }
 
   Widget _buildcontent() {
+    if (_isLoading) {
+      return _loadingView;
+    }
     if (_items.isEmpty) {
       return _emptyStateMessage;
     }
