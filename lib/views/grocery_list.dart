@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shopping_list/HTTP_module/grocery_api/grocery_endpoints.dart';
 import 'package:shopping_list/app_logger.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/grocery_item.dart';
 import 'package:shopping_list/views/new_item.dart';
-import 'package:http/http.dart' as http;
-import 'package:shopping_list/HTTP_module/grocery_api/grocery_api.dart';
-import 'package:shopping_list/HTTP_module/grocery_api/grocery_item_dto.dart';
+import 'package:http_module/src.dart';
 
 class GroceryList extends StatefulWidget {
   const GroceryList({super.key});
@@ -24,7 +21,6 @@ class _GroceryListState extends State<GroceryList> {
   @override
   void initState() {
     super.initState();
-    // _loadItems();
     _loadGroceryItems();
   }
 
@@ -65,45 +61,6 @@ class _GroceryListState extends State<GroceryList> {
       });
       AppLog.api.error('Error loading grocery items: $e');
     }
-  }
-
-  void _loadItems() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    final url = GroceryAPIEndPoints.get.url();
-    final response = await http.get(url);
-
-    if (response.statusCode >= 400) {
-      _error = 'Failed to load items.\nTry again later';
-    }
-    final Map<String, dynamic> listData = json.decode(response.body);
-    final List<GroceryItem> loadedItems = [];
-    for (final entry in listData.entries) {
-      final itemCategory = categories.values.firstWhere(
-        (category) => category.title == entry.value['category'],
-      );
-
-      final item = GroceryItem(
-        id: entry.key,
-        name: entry.value['name'],
-        quantity: entry.value['quantity'],
-        category: itemCategory,
-      );
-      loadedItems.add(item);
-    }
-
-    setState(() {
-      _items = loadedItems;
-      _isLoading = false;
-    });
-
-    final decodedResponse = jsonDecode(response.body);
-    final prettyJson = const JsonEncoder.withIndent(
-      '  ',
-    ).convert(decodedResponse);
-    AppLog.api.dLog('LOADED items: $prettyJson');
   }
 
   void _addNewitem() async {
