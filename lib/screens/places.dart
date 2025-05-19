@@ -1,4 +1,6 @@
 import 'package:favorite_places/models/place.dart';
+import 'package:favorite_places/screens/add_place.dart';
+import 'package:favorite_places/screens/add_place_form.dart';
 import 'package:favorite_places/widgets/places_list.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +13,16 @@ class PlacesScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Your Plces'),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        actions: [IconButton(icon: const Icon(Icons.add), onPressed: () {})],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (ctx) => const AddPlaceScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: PlacesList(places: [Place(title: 'First place')]),
     );
