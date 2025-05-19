@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:favorite_places/providers/user_places_provider.dart';
 import 'package:favorite_places/widgets/image_input.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,8 @@ class AddPlaceScreen extends ConsumerStatefulWidget {
 
 class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
+  File? _selectedImage;
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -21,15 +25,17 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   }
 
   void _savePlace() {
-    if (_titleController.text.isEmpty) {
+    if (_titleController.text.isEmpty || _selectedImage == null) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Please enter the valid title')));
+      ).showSnackBar(SnackBar(content: Text('Please enter the valid data')));
       return;
     }
 
-    ref.read(userPlacesProvider.notifier).addPlace(_titleController.text);
+    ref
+        .read(userPlacesProvider.notifier)
+        .addPlace(_titleController.text, _selectedImage!);
     Navigator.of(context).pop();
   }
 
@@ -49,7 +55,11 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
               controller: _titleController,
             ),
             const SizedBox(height: 16),
-            ImageInput(),
+            ImageInput(
+              onPickImage: (image) {
+                _selectedImage = image;
+              },
+            ),
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: _savePlace,
