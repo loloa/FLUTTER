@@ -1,6 +1,6 @@
 import 'package:favorite_places/providers/user_places_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:favorite_places/models/place.dart';
+
 import 'package:favorite_places/screens/add_place.dart';
 // import 'package:favorite_places/screens/add_place_form.dart';
 import 'package:favorite_places/widgets/places_list.dart';
