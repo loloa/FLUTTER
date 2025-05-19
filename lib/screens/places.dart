@@ -11,7 +11,7 @@ class PlacesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _userPlaces = ref.watch(userPlacesProvider);
+    final userPlaces = ref.watch(userPlacesProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Plces'),
@@ -27,7 +27,7 @@ class PlacesScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: PlacesList(places: _userPlaces),
+      body: PlacesList(places: userPlaces),
     );
   }
 }
