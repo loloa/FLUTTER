@@ -13,7 +13,7 @@ class PlacesScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         actions: [IconButton(icon: const Icon(Icons.add), onPressed: () {})],
       ),
-      body: PlacesList(places: [Place(title: 'First')]),
+      body: PlacesList(places: [Place(title: 'First place')]),
     );
   }
 }
